@@ -1,0 +1,13 @@
+# dataset is too big for GitHub; copy it to Great Lakes with scp
+data_from_kaggle.zip
+data_from_kaggle/
+dataset/
+
+# saved model and run logs
+*.keras
+logs/*.out
+
+# Python / Jupyter clutter
+__pycache__/
+.ipynb_checkpoints/
+.venv/

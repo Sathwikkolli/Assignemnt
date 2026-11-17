@@ -1,0 +1,5 @@
+tensorflow[and-cuda]>=2.16,<2.21
+numpy
+matplotlib
+nbconvert
+ipykernel
