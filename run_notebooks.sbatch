@@ -11,8 +11,9 @@
 set -e
 cd "$SLURM_SUBMIT_DIR"
 
-module load python                       # same module used in setup_env.sh
-source ~/keras_hw_env/bin/activate
+module load python3.10-anaconda/2023.03
+source "$(conda info --base)/etc/profile.d/conda.sh"   # makes `conda activate` work in batch jobs
+conda activate ece-5831-2026
 
 nvidia-smi || echo "No GPU visible"
 
