@@ -1,11 +1,11 @@
 #!/bin/bash
-# one-time setup on Great Lakes: adds the needed packages to the ece-5831-2026 conda env
+# one-time setup on Great Lakes: installs packages into the ece-5831-2026 conda env
 set -e
 
-module load python3.10-anaconda/2023.03
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate ece-5831-2026
+PY="$HOME/.conda/envs/ece-5831-2026/bin/python"   # full path so the shared anaconda module can't take over
 
-pip install -r requirements.txt
+"$PY" -m pip install --upgrade pip
+"$PY" -m pip install -r requirements.txt
+"$PY" -m ipykernel install --user --name ece-5831-2026   # kernel used by run_notebooks.sbatch
 
-python -c "import tensorflow as tf; print('TensorFlow', tf.__version__)"
+"$PY" -c "import tensorflow as tf; print('TF', tf.__version__)"

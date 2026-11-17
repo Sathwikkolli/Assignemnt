@@ -11,14 +11,15 @@
 set -e
 cd "$SLURM_SUBMIT_DIR"
 
-module load python3.10-anaconda/2023.03
-source "$(conda info --base)/etc/profile.d/conda.sh"   # makes `conda activate` work in batch jobs
-conda activate ece-5831-2026
+PY="$HOME/.conda/envs/ece-5831-2026/bin/python"   # full path so the shared anaconda module can't take over
+"$PY" -c "import tensorflow as tf; print('TF', tf.__version__, tf.config.list_physical_devices('GPU'))"
 
 nvidia-smi || echo "No GPU visible"
 
-# run each notebook top to bottom and save outputs into the same file
-jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=-1 Two_layer_net.ipynb
-jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=-1 CNN_cat_dog.ipynb
+# run each notebook top to bottom with the env's kernel and save outputs into the same file
+for nb in Two_layer_net.ipynb CNN_cat_dog.ipynb; do
+    "$PY" -m jupyter nbconvert --to notebook --execute --inplace \
+        --ExecutePreprocessor.kernel_name=ece-5831-2026 --ExecutePreprocessor.timeout=-1 "$nb"
+done
 
 echo "Done"
