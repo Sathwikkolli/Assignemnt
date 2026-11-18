@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=keras_hw
-#SBATCH --account=YOUR_ACCOUNT          # replace: run `my_accounts` on Great Lakes to see yours
+#SBATCH --account=hafiz1
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
 #SBATCH --cpus-per-task=4
@@ -16,8 +16,9 @@ PY="$HOME/.conda/envs/ece-5831-2026/bin/python"   # full path so the shared anac
 
 nvidia-smi || echo "No GPU visible"
 
-# run each notebook top to bottom with the env's kernel and save outputs into the same file
-for nb in Two_layer_net.ipynb CNN_cat_dog.ipynb; do
+# run notebooks given as arguments (default: both) with the env's kernel and save outputs in place
+NOTEBOOKS="${@:-Two_layer_net.ipynb CNN_cat_dog.ipynb}"
+for nb in $NOTEBOOKS; do
     "$PY" -m jupyter nbconvert --to notebook --execute --inplace \
         --ExecutePreprocessor.kernel_name=ece-5831-2026 --ExecutePreprocessor.timeout=-1 "$nb"
 done
